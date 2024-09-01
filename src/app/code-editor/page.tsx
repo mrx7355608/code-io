@@ -5,9 +5,9 @@ import { useCallback, useEffect, useState } from "react";
 import MonacoCodeEditor from "@/components/MonacoCodeEditor";
 
 export default function CodeEditor() {
-    const [html, setHtml] = useState("<!-- Write HTML here -->");
-    const [css, setCss] = useState("/* Write CSS here */");
-    const [js, setJs] = useState("// Write JavaScript here");
+    const [html, setHtml] = useState("");
+    const [css, setCss] = useState("");
+    const [js, setJs] = useState("");
     const [code, setCode] = useState(
         `
             <html>
@@ -19,6 +19,9 @@ export default function CodeEditor() {
 
         `,
     );
+    const [isVimMode, setIsVimMode] = useState(false);
+    // TODO: create a custom hook useLocalStorage to save vim-mode and
+    // refetch it on page load
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -58,7 +61,7 @@ export default function CodeEditor() {
                 </Heading>
                 <Switch
                     colorScheme="purple"
-                    onChange={(e) => console.log(e.target.checked)}
+                    onChange={(e) => setIsVimMode(e.target.checked)}
                 >
                     Vim mode
                 </Switch>
@@ -67,21 +70,21 @@ export default function CodeEditor() {
             <HStack w="full" p={2} h={"45vh"}>
                 <MonacoCodeEditor
                     label={"html"}
-                    defaultValue={html}
                     defaultLanguage={"html"}
                     setValue={memoizedSetHtml}
+                    isVimMode={isVimMode}
                 />
                 <MonacoCodeEditor
                     label={"css"}
-                    defaultValue={css}
                     defaultLanguage={"css"}
                     setValue={memoizedSetCss}
+                    isVimMode={isVimMode}
                 />
                 <MonacoCodeEditor
                     label={"js"}
-                    defaultValue={js}
                     defaultLanguage={"javascript"}
                     setValue={memoizedSetJs}
+                    isVimMode={isVimMode}
                 />
             </HStack>
 

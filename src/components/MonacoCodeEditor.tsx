@@ -7,22 +7,27 @@ import * as monaco from "monaco-editor";
 
 interface ICodeEditorProps {
     label: string;
-    defaultValue: string;
     defaultLanguage: string;
     setValue: (val: string) => void;
+    isVimMode: boolean;
 }
 
 const MonacoCodeEditor = ({
     label,
     defaultLanguage,
-    defaultValue,
     setValue,
+    isVimMode,
 }: ICodeEditorProps) => {
     console.log(label + " editor rendering...");
     const statusbarRef = useRef<HTMLDivElement | null>(null);
     const vimModeRef = useRef<any>(null);
+    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
     const handleEditorDidMount: OnMount = (editor, _monaco) => {
+        editorRef.current = editor;
+
+        if (!isVimMode) return;
+
         // setup monaco-vim
         (window.require as any).config({
             paths: {
@@ -36,12 +41,23 @@ const MonacoCodeEditor = ({
                 statusbarRef.current,
             );
         });
+        // *** I KNOW IT'S HORRIBLE BUT IT WORKS ANYWAYS XD ***
     };
+
+    useEffect(() => {
+        if (editorRef.current) {
+            handleEditorDidMount(editorRef.current, monaco);
+        }
+
+        return () => {
+            // editorRef.current?.dispose();
+            vimModeRef.current?.dispose();
+        };
+    }, [isVimMode]);
 
     return (
         <>
             <Editor
-                defaultValue={defaultValue}
                 defaultLanguage={defaultLanguage}
                 height={"100%"}
                 onMount={handleEditorDidMount}
