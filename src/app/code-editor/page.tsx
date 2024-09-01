@@ -1,6 +1,6 @@
 "use client";
 
-import { VStack, HStack } from "@chakra-ui/react";
+import { VStack, HStack, Heading, Switch } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import MonacoCodeEditor from "@/components/MonacoCodeEditor";
 
@@ -52,8 +52,19 @@ export default function CodeEditor() {
 
     return (
         <VStack h={"100vh"} gap={0}>
+            <HStack p={2} bg="white" w="full" px={3}>
+                <Heading fontSize={"2xl"} marginRight={"5"}>
+                    Project Name
+                </Heading>
+                <Switch
+                    colorScheme="purple"
+                    onChange={(e) => console.log(e.target.checked)}
+                >
+                    Vim mode
+                </Switch>
+            </HStack>
             {/* Code Editors */}
-            <HStack w="full" p={3} pb={2} h={"50vh"}>
+            <HStack w="full" p={2} h={"45vh"}>
                 <MonacoCodeEditor
                     label={"html"}
                     defaultValue={html}
@@ -80,6 +91,7 @@ export default function CodeEditor() {
                 style={{
                     width: "100%",
                     height: "50vh",
+                    background: "white",
                 }}
             ></iframe>
         </VStack>

@@ -3,7 +3,7 @@ import { Fira_Code } from "next/font/google";
 import "./globals.css";
 import Provider from "./provider";
 
-const inter = Fira_Code({ subsets: ["latin"] });
+const firacode = Fira_Code({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Code IO",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={firacode.className} style={{ background: "#eee" }}>
                 <Provider>{children}</Provider>
             </body>
         </html>
