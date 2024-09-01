@@ -2,23 +2,22 @@
 
 import React, { useEffect, useRef } from "react";
 import { Editor, OnMount } from "@monaco-editor/react";
-import { Box } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import * as monaco from "monaco-editor";
 
 interface ICodeEditorProps {
-    label: string;
+    defaultValue: string;
     defaultLanguage: string;
     setValue: (val: string) => void;
     isVimMode: boolean;
 }
 
 const MonacoCodeEditor = ({
-    label,
+    defaultValue,
     defaultLanguage,
     setValue,
     isVimMode,
 }: ICodeEditorProps) => {
-    console.log(label + " editor rendering...");
     const statusbarRef = useRef<HTMLDivElement | null>(null);
     const vimModeRef = useRef<any>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -45,30 +44,42 @@ const MonacoCodeEditor = ({
     };
 
     useEffect(() => {
-        if (editorRef.current) {
+        if (editorRef.current && isVimMode) {
             handleEditorDidMount(editorRef.current, monaco);
         }
 
         return () => {
-            // editorRef.current?.dispose();
             vimModeRef.current?.dispose();
         };
     }, [isVimMode]);
 
     return (
-        <>
+        <Box position="relative" w="full" h="full">
             <Editor
-                defaultLanguage={defaultLanguage}
+                defaultValue={defaultValue}
+                language={defaultLanguage}
                 height={"100%"}
                 onMount={handleEditorDidMount}
+                loading={<Spinner />}
+                options={{
+                    minimap: { enabled: false },
+                }}
                 onChange={(value, _event) => {
                     if (value) {
                         setValue(value);
                     }
                 }}
             />
-            <Box ref={statusbarRef}></Box>
-        </>
+            {isVimMode && (
+                <Box
+                    position={"absolute"}
+                    bg="red.400"
+                    w="full"
+                    bottom="0"
+                    ref={statusbarRef}
+                ></Box>
+            )}
+        </Box>
     );
 };
 

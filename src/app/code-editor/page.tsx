@@ -5,36 +5,30 @@ import { useCallback, useEffect, useState } from "react";
 import MonacoCodeEditor from "@/components/MonacoCodeEditor";
 
 export default function CodeEditor() {
+    // TODO: create a custom hook useLocalStorage to save vim-mode and
+    // refetch it on page load
+    const [isVimMode, setIsVimMode] = useState(false);
     const [html, setHtml] = useState("");
     const [css, setCss] = useState("");
     const [js, setJs] = useState("");
     const [code, setCode] = useState(
-        `
-            <html>
-                <head></head>
-                <style>${css}</style>
-                <body>${html}</body>
-                <script>${js}</script>
-            </html>
-
-        `,
+        `<html>
+            <head></head>
+            <style>${css}</style>
+            <body>${html}</body>
+            <script>${js}</script>
+        </html>`,
     );
-    const [isVimMode, setIsVimMode] = useState(false);
-    // TODO: create a custom hook useLocalStorage to save vim-mode and
-    // refetch it on page load
 
     useEffect(() => {
         const timeout = setTimeout(() => {
             setCode(
-                `
-            <html>
-                <head></head>
-                <style>${css}</style>
-                <body>${html}</body>
-                <script>${js}</script>
-            </html>
-
-        `,
+                `<html>
+                    <head></head>
+                    <style>${css}</style>
+                    <body>${html}</body>
+                    <script>${js}</script>
+                </html>`,
             );
         }, 300);
 
@@ -69,19 +63,19 @@ export default function CodeEditor() {
             {/* Code Editors */}
             <HStack w="full" p={2} h={"45vh"}>
                 <MonacoCodeEditor
-                    label={"html"}
+                    defaultValue={"<!-- Write HTML here -->"}
                     defaultLanguage={"html"}
                     setValue={memoizedSetHtml}
                     isVimMode={isVimMode}
                 />
                 <MonacoCodeEditor
-                    label={"css"}
+                    defaultValue={"/* Write CSS here */"}
                     defaultLanguage={"css"}
                     setValue={memoizedSetCss}
                     isVimMode={isVimMode}
                 />
                 <MonacoCodeEditor
-                    label={"js"}
+                    defaultValue={"// Write JS here"}
                     defaultLanguage={"javascript"}
                     setValue={memoizedSetJs}
                     isVimMode={isVimMode}
@@ -93,7 +87,7 @@ export default function CodeEditor() {
                 srcDoc={code}
                 style={{
                     width: "100%",
-                    height: "50vh",
+                    height: "45vh",
                     background: "white",
                 }}
             ></iframe>
