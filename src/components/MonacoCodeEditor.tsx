@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Editor, OnMount } from "@monaco-editor/react";
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, HStack, Spinner, Button } from "@chakra-ui/react";
 import * as monaco from "monaco-editor";
 
 interface ICodeEditorProps {
-    defaultValue: string;
+    label: string;
     defaultLanguage: string;
     setValue: (val: string) => void;
     isVimMode: boolean;
 }
 
 const MonacoCodeEditor = ({
-    defaultValue,
+    label,
     defaultLanguage,
     setValue,
     isVimMode,
@@ -21,6 +21,7 @@ const MonacoCodeEditor = ({
     const statusbarRef = useRef<HTMLDivElement | null>(null);
     const vimModeRef = useRef<any>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const handleEditorDidMount: OnMount = (editor, _monaco) => {
         editorRef.current = editor;
@@ -54,9 +55,24 @@ const MonacoCodeEditor = ({
     }, [isVimMode]);
 
     return (
-        <Box position="relative" w="full" h="full">
+        <Box
+            position="relative"
+            w={isCollapsed ? "0px" : "3"}
+            h="full"
+            flex={isCollapsed ? "0.2" : "1"}
+        >
+            <HStack
+                bg="gray.300"
+                p={1}
+                fontSize="sm"
+                justifyContent={"space-between"}
+            >
+                <p>{label}</p>
+                <Button size="xs" onClick={() => setIsCollapsed(!isCollapsed)}>
+                    {isCollapsed ? "Expand" : "Collapse"}
+                </Button>
+            </HStack>
             <Editor
-                defaultValue={defaultValue}
                 language={defaultLanguage}
                 height={"100%"}
                 onMount={handleEditorDidMount}
