@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
-import "./globals.css";
-import Provider from "./provider";
+import { ChakraUIProvider, SessionProvider } from "./providers";
+import { getServerSession } from "next-auth";
 
 const firacode = Fira_Code({ subsets: ["latin"] });
 
@@ -10,15 +10,21 @@ export const metadata: Metadata = {
     description: "Online HTML CSS and JS editor",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const sessions = await getServerSession();
+
     return (
         <html lang="en">
-            <body className={firacode.className} style={{ background: "#eee" }}>
-                <Provider>{children}</Provider>
+            <body className={firacode.className}>
+                <ChakraUIProvider>
+                    <SessionProvider session={sessions}>
+                        {children}
+                    </SessionProvider>
+                </ChakraUIProvider>
             </body>
         </html>
     );
