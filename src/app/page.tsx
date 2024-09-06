@@ -1,7 +1,11 @@
+import HomepageSearchbar from "@/components/HomepageSearchbar";
+import ProjectsList from "@/components/ProjectsList";
+
 export default function Home() {
-  return (
-    <main>
-        <h1>Hello</h1>
-    </main>
-  );
+    return (
+        <main style={{ width: "70vw", margin: "auto", padding: "40px 0px" }}>
+            <HomepageSearchbar />
+            <ProjectsList />
+        </main>
+    );
 }

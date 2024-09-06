@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import { ChakraUIProvider, SessionProvider } from "./providers";
 import { getServerSession } from "next-auth";
+import Navbar from "@/components/Navbar";
 
 const firacode = Fira_Code({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default async function RootLayout({
             <body className={firacode.className}>
                 <ChakraUIProvider>
                     <SessionProvider session={sessions}>
+                        <Navbar />
                         {children}
                     </SessionProvider>
                 </ChakraUIProvider>

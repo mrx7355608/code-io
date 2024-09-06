@@ -12,7 +12,7 @@ export default async function LoginPage() {
     }
 
     return (
-        <VStack minH="100vh" justifyContent={"center"}>
+        <VStack minH="80vh" justifyContent={"center"}>
             <Heading fontFamily={"Fira Code"} as="h2" mb="3">
                 CodeIO
             </Heading>
