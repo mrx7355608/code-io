@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { IUser } from "@/types/models.types";
+import mongoose, { Model } from "mongoose";
+import { IUser, IProject } from "@/types/models.types";
 
 const userSchema = new mongoose.Schema<IUser>(
     {
@@ -25,7 +25,44 @@ const userSchema = new mongoose.Schema<IUser>(
     },
 );
 
-const UserModel =
+const projectSchema = new mongoose.Schema<IProject>(
+    {
+        project_name: {
+            type: String,
+            required: true,
+        },
+        preview_thumbnail: {
+            type: String,
+            required: true,
+        },
+        html: {
+            type: String,
+            required: true,
+        },
+        css: {
+            type: String,
+            required: true,
+        },
+        js: {
+            type: String,
+            required: true,
+        },
+        developer: {
+            type: String,
+            required: true,
+            ref: "User",
+        },
+    },
+    {
+        timestamps: true,
+    },
+);
+
+const UserModel: Model<IUser> =
     mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
-export { UserModel };
+const ProjectModel: Model<IProject> =
+    mongoose.models.Project ||
+    mongoose.model<IProject>("Project", projectSchema);
+
+export { UserModel, ProjectModel };
