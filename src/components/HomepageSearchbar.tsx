@@ -8,7 +8,8 @@ export default function HomepageSearchbar() {
             placeholder="Search projects..."
             size="lg"
             mb={8}
-            bg={useColorModeValue("white", "gray.700")}
+            bg={useColorModeValue("gray.50", "gray.700")}
+            variant={"filled"}
         />
     );
 }
